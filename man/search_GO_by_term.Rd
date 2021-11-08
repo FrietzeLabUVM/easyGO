@@ -7,7 +7,8 @@
 search_GO_by_term(search_term, search_field = c("TERM", "DEFINITION")[1])
 }
 \arguments{
-\item{search_term}{character term to search for in TERM (or DEFINITION) of GO database.}
+\item{search_term}{character term to search for in TERM (or DEFINITION) of GO
+database.}
 
 \item{search_field}{character field to search in GO database.}
 }

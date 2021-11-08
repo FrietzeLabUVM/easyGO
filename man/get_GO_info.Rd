@@ -28,7 +28,7 @@ delimitted. OrgDb must be supplied.}
 \item{org.db}{OrgDb such as org.Hs.eg.db, org.Mm.eg.db, org.Dm.eg.db etc.
 Required for include_genes.}
 
-\item{gene_name2go}{Optional result of get_gene_name2go() for org.db. Much
+\item{gene_name2go}{Optional result of get_GO_gene_name2go() for org.db. Much
 faster if supplied.}
 }
 \value{
@@ -47,7 +47,7 @@ get_GO_info(go_ids,
   include_genes = TRUE,
   org.db = org.Hs.eg.db::org.Hs.eg.db)
 # Speed things up by pre-generating gene_name2go and reusing.
-gene_name2go = get_gene_name2go(org.Hs.eg.db::org.Hs.eg.db)
+gene_name2go = get_GO_gene_name2go(org.Hs.eg.db::org.Hs.eg.db)
 get_GO_info(go_ids,
   include_children = TRUE,
   include_parents = TRUE,

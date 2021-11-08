@@ -16,9 +16,10 @@ get_GO_gene_names(
 
 \item{org.db}{OrgDb such as org.Hs.eg.db, org.Mm.eg.db, org.Dm.eg.db etc.}
 
-\item{as.list}{If TRUE, a list with children per input parent_go is returned instead of unique character vector for all parent_go.}
+\item{as.list}{If TRUE, a list with children per input parent_go is returned
+instead of unique character vector for all parent_go.}
 
-\item{gene_name2go}{Optional result of get_gene_name2go() for org.db. Much
+\item{gene_name2go}{Optional result of get_GO_gene_name2go() for org.db. Much
 faster if supplied.}
 }
 \value{
@@ -28,5 +29,6 @@ data.frame with mapping for ENTREZID, GO, EVIDENCE, ONTOLOGY, SYMBOL
 get_GO_gene_names
 }
 \examples{
-gene_name2go = get_gene_name2go(org.Hs.eg.db::org.Hs.eg.db)
+gene_name2go = get_GO_gene_name2go(org.Hs.eg.db::org.Hs.eg.db)
+head(gene_name2go)
 }

@@ -1,0 +1,102 @@
+---
+title: "The **easyGO** package"
+author: "Joseph R Boyd"
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Overview and Use Cases}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+<style type = "text/css"> em { font-weight: bold; } </style>
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    dpi=60
+)
+```
+
+# Synopsis
+
+easyGO provides human friendly ways to interact with genes and ontologies. It does not do enrichment but it helpful for certain utility things that various enrichment methods don't necessarily make straightforward.
+
+Such as:
+1. ENTREZ to GENE_SYMBOL interconversion.
+2. Retrieval of ontology info in a data.frame, including children, parents, and gene members.
+3. Searching ontologies by term.
+4. Retrieving gene members for ontologies.
+
+# Setup
+
+```{r libs}
+library(easyGO)
+org.db = org.Hs.eg.db::org.Hs.eg.db
+```
+
+# Searching
+
+Search by TERM (default).  You can also search the DEFINITION field.
+
+```{r search}
+go_ids = head(search_GO_by_term("MAPK", search_field = "TERM"))
+go_ids
+```
+
+More info per GO Term.
+
+```{r get info}
+DT::datatable(get_GO_info(go_ids))
+```
+
+Additional details can be retrieved but take a little longer.
+
+```{r get info details}
+DT::datatable(get_GO_info(go_ids, include_children = TRUE, include_parents = TRUE, include_genes = TRUE, org.db = org.db))
+```
+
+Searching by DEFINITION can yield more results because there's more text.
+
+```{r}
+go_ids.by_def = search_GO_by_term("MAPK", search_field = "DEFINITION")
+```
+
+# Getting genes
+
+```{r get genes default}
+get_GO_gene_names(go_ids, org.db)
+```
+
+```{r get genes as.list}
+get_GO_gene_names(go_ids, org.db, as.list = TRUE)
+```
+
+# Getting parents
+
+```{r}
+get_GO_parents(go_ids)
+```
+
+```{r}
+get_GO_parents(go_ids, as.list = TRUE)
+```
+
+# Getting children
+
+
+```{r}
+get_all_children.no_parents(go_ids)
+get_GO_children(go_ids)
+```
+
+```{r}
+get_GO_children(go_ids)
+```
+
+```{r}
+get_GO_children(go_ids, as.list = TRUE)
+```
+
+}
