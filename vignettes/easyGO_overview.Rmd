@@ -87,16 +87,11 @@ get_GO_parents(go_ids, as.list = TRUE)
 
 
 ```{r}
-get_all_children.no_parents(go_ids)
 get_GO_children(go_ids)
-```
-
-```{r}
-get_GO_children(go_ids)
-```
-
-```{r}
 get_GO_children(go_ids, as.list = TRUE)
 ```
 
-}
+```{r}
+get_GO_children.with_self(go_ids)
+get_GO_children.with_self(go_ids, as.list = TRUE)
+```

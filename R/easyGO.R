@@ -1,5 +1,4 @@
 GO = NULL
-GO.db = NULL
 
 #' get_GO_info
 #'
@@ -16,7 +15,7 @@ GO.db = NULL
 #'   faster if supplied.
 #'
 #' @return A data.frame of information about supplied GO ids.
-#' @import GO.db
+#' @import GO.db AnnotationDbi
 #' @export
 #'
 #' @examples
@@ -37,7 +36,7 @@ GO.db = NULL
 #'   org.db = org.Hs.eg.db::org.Hs.eg.db,
 #'   gene_name2go = gene_name2go)
 get_GO_info = function(go_ids, include_children = FALSE, include_parents = FALSE, include_genes = FALSE, org.db = NULL, gene_name2go = NULL){
-    go_df = as.data.frame(select(GO.db, go_ids, columns(GO.db)))
+    go_df = as.data.frame(AnnotationDbi::select(GO.db::GO.db, go_ids, columns(GO.db::GO.db)))
     if(include_children){
         all_children = lapply(go_ids, get_GO_children)
         go_df$CHILDREN = sapply(all_children, paste, collapse = ",")
@@ -83,7 +82,7 @@ get_GO_info = function(go_ids, include_children = FALSE, include_parents = FALSE
 #' search_GO_by_term("MAPK", search_field = "DEFINITION")
 search_GO_by_term = function(search_term, search_field = c("TERM", "DEFINITION")[1]){
     stopifnot(search_field %in% c("TERM", "DEFINITION"))
-    sel = subset(AnnotationDbi::select(GO.db, keys(GO.db), columns(GO.db)), grepl(search_term, get(search_field)))
+    sel = subset(AnnotationDbi::select(GO.db::GO.db, keys(GO.db::GO.db), columns(GO.db::GO.db)), grepl(search_term, get(search_field)))
     sel_go = sel$GOID
     sel_go
 }
@@ -199,8 +198,8 @@ get_GO_children = function(parent_go, as.list = FALSE){
 #' gene_name2go = get_GO_gene_name2go(org.Hs.eg.db::org.Hs.eg.db)
 #' head(gene_name2go)
 get_GO_gene_name2go = function(org.db = org.Hs.eg.db::org.Hs.eg.db){
-    entrez2go = select(org.db, keys= keys(org.db), columns = c("GO"))
-    entrez2gene_name = select(org.db, keys= keys(org.db), columns = c("SYMBOL"))
+    entrez2go = AnnotationDbi::select(org.db, keys= keys(org.db), columns = c("GO"))
+    entrez2gene_name = AnnotationDbi::select(org.db, keys= keys(org.db), columns = c("SYMBOL"))
     gene_name2go = merge(entrez2go, entrez2gene_name, by = 'ENTREZID')
     gene_name2go
 }
