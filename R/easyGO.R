@@ -13,6 +13,7 @@ GO = NULL
 #'   Required for include_genes.
 #' @param gene_name2go Optional result of get_GO_gene_name2go() for org.db. Much
 #'   faster if supplied.
+#' @param sep character delimiter to use for items in extra columns. Default is ",".
 #'
 #' @return A data.frame of information about supplied GO ids.
 #' @import GO.db AnnotationDbi
@@ -35,16 +36,16 @@ GO = NULL
 #'   include_genes = TRUE,
 #'   org.db = org.Hs.eg.db::org.Hs.eg.db,
 #'   gene_name2go = gene_name2go)
-get_GO_info = function(go_ids, include_children = FALSE, include_parents = FALSE, include_genes = FALSE, org.db = NULL, gene_name2go = NULL){
+get_GO_info = function(go_ids, include_children = FALSE, include_parents = FALSE, include_genes = FALSE, org.db = NULL, gene_name2go = NULL, sep = ","){
     go_df = as.data.frame(AnnotationDbi::select(GO.db::GO.db, go_ids, columns(GO.db::GO.db)))
     if(include_children){
         all_children = lapply(go_ids, get_GO_children)
-        go_df$CHILDREN = sapply(all_children, paste, collapse = ",")
+        go_df$CHILDREN = sapply(all_children, paste, collapse = sep)
 
     }
     if(include_parents){
         all_parents = lapply(go_ids, get_GO_parents)
-        go_df$PARENTS = sapply(all_parents, paste, collapse = ",")
+        go_df$PARENTS = sapply(all_parents, paste, collapse = sep)
     }
     if(include_genes){
         if(is.null(org.db)){
@@ -62,7 +63,7 @@ get_GO_info = function(go_ids, include_children = FALSE, include_parents = FALSE
         }
         all_children = lapply(go_ids, get_GO_children.with_self)
         all_genes = lapply(all_children, get_GO_gene_names, gene_name2go = gene_name2go)
-        go_df$GENES = sapply(all_genes, paste, collapse = ",")
+        go_df$GENES = sapply(all_genes, paste, collapse = sep)
     }
     go_df
 }

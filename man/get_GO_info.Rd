@@ -10,7 +10,8 @@ get_GO_info(
   include_parents = FALSE,
   include_genes = FALSE,
   org.db = NULL,
-  gene_name2go = NULL
+  gene_name2go = NULL,
+  sep = ","
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ Required for include_genes.}
 
 \item{gene_name2go}{Optional result of get_GO_gene_name2go() for org.db. Much
 faster if supplied.}
+
+\item{sep}{character delimiter to use for items in extra columns. Default is ",".}
 }
 \value{
 A data.frame of information about supplied GO ids.

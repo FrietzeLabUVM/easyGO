@@ -1,21 +1,14 @@
 ---
 title: "The **easyGO** package"
 author: "Joseph R Boyd"
-output:
-  BiocStyle::html_document:
-    toc_float: true
-vignette: >
-    %\VignetteIndexEntry{Overview and Use Cases}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+output: html_document
 ---
 
-<style type = "text/css"> em { font-weight: bold; } </style>
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE,
-    dpi=60
+  collapse = TRUE,
+  dpi=60
 )
 ```
 
@@ -24,6 +17,7 @@ knitr::opts_chunk$set(
 easyGO provides human friendly ways to interact with genes and ontologies. It does not do enrichment but it helpful for certain utility things that various enrichment methods don't necessarily make straightforward.
 
 Such as:
+
 1. ENTREZ to GENE_SYMBOL interconversion.
 2. Retrieval of ontology info in a data.frame, including children, parents, and gene members.
 3. Searching ontologies by term.
@@ -45,22 +39,28 @@ go_ids = head(search_GO_by_term("MAPK", search_field = "TERM"))
 go_ids
 ```
 
+Searching by DEFINITION can yield more results because there's more text.
+
+```{r}
+go_ids.by_def = search_GO_by_term("MAPK", search_field = "DEFINITION")
+```
+
+# Getting Info
+
 More info per GO Term.
 
 ```{r get info}
-DT::datatable(get_GO_info(go_ids))
+go_info = get_GO_info(go_ids)
+DT::datatable(go_info)
 ```
 
 Additional details can be retrieved but take a little longer.
 
 ```{r get info details}
-DT::datatable(get_GO_info(go_ids, include_children = TRUE, include_parents = TRUE, include_genes = TRUE, org.db = org.db))
-```
-
-Searching by DEFINITION can yield more results because there's more text.
-
-```{r}
-go_ids.by_def = search_GO_by_term("MAPK", search_field = "DEFINITION")
+go_info.details = get_GO_info(go_ids, include_children = TRUE, include_parents = TRUE, include_genes = TRUE, org.db = org.db, sep = " ")
+DT::datatable(
+  go_info.details, 
+  options = list(scrollX = TRUE))
 ```
 
 # Getting genes
@@ -91,7 +91,12 @@ get_GO_children(go_ids)
 get_GO_children(go_ids, as.list = TRUE)
 ```
 
+Sometimes it's convienent to include original GO terms when retrieving children.
+
 ```{r}
 get_GO_children.with_self(go_ids)
 get_GO_children.with_self(go_ids, as.list = TRUE)
 ```
+
+
+
